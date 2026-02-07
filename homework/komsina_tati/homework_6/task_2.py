@@ -1,4 +1,4 @@
-for number in range(1, 16):
+for number in range(1, 101):
     if number % 3 == 0 | number % 5 == 0:
         print("FuzzBuzz")
     if number % 3 == 0:
