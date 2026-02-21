@@ -49,7 +49,8 @@ class Textbook(Book):
 
     def print_details(self):
         print(
-            f'Название: {self.title}, автор: {self.author}, страниц: {self.num_pages}, предмет: {self.subject}, класс: {self.group}',
+            f'Название: {self.title}, автор: {self.author}, страниц: {self.num_pages}, '
+            f'предмет: {self.subject}, класс: {self.group}',
             end='')
         if self.is_reserved:
             print(', зарезервирована')
@@ -57,9 +58,12 @@ class Textbook(Book):
             print()
 
 
-textbook_1 = Textbook('Алгебра', 'Арефьева', 300, '1234567890128', "Математика", 9, True, False)
-textbook_2 = Textbook('Геометрия', 'Латотина', 270, '1234567890128', "Математика", 11, True, False)
-textbook_3 = Textbook('Химия', 'Кузьменкова', 410, '1234567890128', "Химия", 10, True, False)
+textbook_1 = Textbook(
+    'Алгебра', 'Арефьева', 300, '1234567890128', "Математика", 9, True, False)
+textbook_2 = Textbook(
+    'Геометрия', 'Латотина', 270, '1234567890128', "Математика", 11, True, False)
+textbook_3 = Textbook(
+    'Химия', 'Кузьменкова', 410, '1234567890128', "Химия", 10, True, False)
 
 textbook_1.reserve()
 
