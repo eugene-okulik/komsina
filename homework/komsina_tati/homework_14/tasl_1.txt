@@ -1,0 +1,40 @@
+INSERT INTO students (name, second_name) VALUES ('Bruce', 'Wayne')
+
+INSERT INTO books (title, taken_by_student_id) VALUES ('how to prevent crime', 22616), ('how to save the world', 22616)
+
+INSERT INTO `groups` (title, start_date, end_date) VALUES ('supehero', 'march 2026', 'march 2027')
+UPDATE students SET group_id = 22587 where id = 22616
+
+INSERT INTO subjects (title) VALUES ('superhero subject 1')
+INSERT INTO subjects (title) VALUES ('superhero subject 2')
+
+INSERT INTO lessons (title, subject_id) VALUES ('superhero lesson 1', 22654)
+INSERT INTO lessons (title, subject_id) VALUES ('superhero lesson 2', 22654)
+INSERT INTO lessons (title, subject_id) VALUES ('superhero lesson 3', 22655)
+INSERT INTO lessons (title, subject_id) VALUES ('superhero lesson 4', 22655)
+
+INSERT INTO marks (value, lesson_id, student_id) VALUES (10, 75813, 22616)
+INSERT INTO marks (value, lesson_id, student_id) VALUES (9, 75814, 22616)
+INSERT INTO marks (value, lesson_id, student_id) VALUES (8, 75815, 22616)
+INSERT INTO marks (value, lesson_id, student_id) VALUES (7, 75816, 22616)
+
+-- Все оценки студента
+SELECT value FROM marks WHERE student_id = 22616
+
+-- Все книги, которые находятся у студента
+SELECT title FROM books WHERE taken_by_student_id = 22616
+
+-- Для вашего студента выведите всё, что о нем есть в базе: группа, книги, оценки с названиями занятий и предметов (всё одним запросом с использованием Join)
+SELECT s.name, s.second_name, s.group_id, g.title, g.start_date, g.end_date, b.title, m.value, l.title, s2.title
+FROM students s
+join `groups` g
+on s.group_id = g.id
+join books b
+on s.id = b.taken_by_student_id
+join marks m
+on s.id = m.student_id
+join lessons l
+on l.id = m.lesson_id
+join subjects s2
+on s2.id = l.subject_id
+WHERE s.id = 22616
