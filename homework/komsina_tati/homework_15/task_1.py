@@ -77,7 +77,7 @@ print("\nКниги студента ")
 cursor.execute("SELECT title FROM books WHERE taken_by_student_id = %s", (student_id,))
 print(cursor.fetchall())
 
-# Для вашего студента выведите всё, что о нем есть в базе: группа, книги, оценки с названиями занятий и предметов 
+# Для вашего студента выведите всё, что о нем есть в базе: группа, книги, оценки с названиями занятий и предметов
 print("\nИнформация о студенте ")
 final_query = '''
 SELECT s.name, s.second_name, s.group_id, g.title, g.start_date, g.end_date, b.title, m.value, l.title, s2.title
