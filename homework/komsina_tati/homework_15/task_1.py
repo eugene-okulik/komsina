@@ -56,14 +56,16 @@ for subject_name, subject_id in subject_ids.items():
             'id': lesson_id
         })
 
-insert_marks_query = "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)"
+marks_values = []
+
 for subject_name, lessons in lesson_ids.items():
     for lesson in lessons:
         lesson_id = lesson['id']
         grade_value = 9 if lesson_id % 2 == 0 else 10
+        marks_values.append((student_id, lesson_id, grade_value))
 
-        values = (student_id, lesson_id, grade_value)
-        cursor.execute(insert_marks_query, values)
+insert_marks_query = "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)"
+cursor.executemany(insert_marks_query, marks_values)
 
 db.commit()
 
