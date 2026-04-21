@@ -5,7 +5,11 @@ import csv
 
 dotenv.load_dotenv()
 
-csv_file_path = "/Users/tanya/PycharmProjects/komsina/homework/eugene_okulik/Lesson_16/hw_data/data.csv"
+# csv_file_path = "/Users/tanya/PycharmProjects/komsina/homework/eugene_okulik/Lesson_16/hw_data/data.csv"
+current_path = os.path.dirname(__file__)
+homework_directory_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+eugene_okulik_path = os.path.join(homework_directory_path, "eugene_okulik",
+                                  "Lesson_16", "hw_data", "data.csv")
 
 db = mysql.connect(
     user=os.getenv('DB_USER'),
@@ -17,7 +21,7 @@ db = mysql.connect(
 
 cursor = db.cursor()
 
-with open(csv_file_path, newline='') as csv_data_file:
+with open(eugene_okulik_path, newline='') as csv_data_file:
     csv_data = csv.DictReader(csv_data_file)
     for line in csv_data:
         query = '''
