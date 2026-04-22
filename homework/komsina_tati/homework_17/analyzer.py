@@ -5,7 +5,6 @@ from colorama import init, Fore, Style
 
 # python3 analyzer.py /Users/tanya/PycharmProjects/komsina/homework/eugene_okulik/data/logs --text WARN
 # python3 analyzer.py /Users/tanya/PycharmProjects/komsina/homework/eugene_okulik/data/logs --text WARN --first
-# python3 analyzer.py /Users/tanya/PycharmProjects/komsina/homework/eugene_okulik/data/logs --text "Sql exception for geometry"
 
 init(autoreset=True)
 
