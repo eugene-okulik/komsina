@@ -1,5 +1,6 @@
 import requests
 
+
 # Получить все объекты
 # def get_objects():
 #     response = requests.get('http://objapi.course.qa-practice.com/object')
@@ -21,10 +22,12 @@ def post_new_object():
                              headers=headers)
     return response.json()['id']
 
+
 # Очистка после создания
 def clear(object_id):
     response = requests.delete(
         f'http://objapi.course.qa-practice.com/object/{object_id}')
+
 
 # Получить объект по id
 # def get_object_by_id():
@@ -55,6 +58,7 @@ def verify_post_new_object():
     assert response_no_data.status_code == 400, f'Expected 400, got {response_no_data.status_code}'
     clear(object_id)
 
+
 # Проверка изменения существующего объекта методом PUT
 def verify_put_object():
     expected_name = "test updated"
@@ -65,8 +69,10 @@ def verify_put_object():
     response = requests.put(f'http://objapi.course.qa-practice.com/object/{object_id}',
                             json=body, headers=headers)
     assert response.status_code == 200, f'Expected 200, got {response.status_code}'
-    assert response.json()['name'] == expected_name, f'Expected name {expected_name}, got {response.json()["name"]}'
-    assert response.json()['data'] == body['data'], f'Expected data {body["data"]}, got {response.json()["data"]}'
+    assert response.json()[
+               'name'] == expected_name, f'Expected name {expected_name}, got {response.json()["name"]}'
+    assert response.json()['data'] == body[
+        'data'], f'Expected data {body["data"]}, got {response.json()["data"]}'
     response_no_name = requests.put(
         f'http://objapi.course.qa-practice.com/object/{object_id}',
         json={"data": body["data"]},
@@ -78,6 +84,7 @@ def verify_put_object():
         headers=headers)
     assert response_no_data.status_code == 400, f'Expected 400, got {response_no_data.status_code}'
     clear(object_id)
+
 
 # Проверка изменения существующего объекта методом PATCH
 def verify_patch_object():
@@ -95,6 +102,7 @@ def verify_patch_object():
                'id'] == object_id, f'Expected id {object_id}, got {response.json()["id"]}'
     clear(object_id)
 
+
 # Проверка удаления объекта
 def verify_delete_object():
     object_id = post_new_object()
@@ -106,6 +114,7 @@ def verify_delete_object():
     response_not_found = requests.delete(
         'http://objapi.course.qa-practice.com/object/99999999999')
     assert response_not_found.status_code == 404, f'Expected 404, got {response_not_found.status_code}'
+
 
 verify_post_new_object()
 verify_put_object()
