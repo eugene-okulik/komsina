@@ -25,7 +25,7 @@ def post_new_object():
 
 # Очистка после создания
 def clear(object_id):
-    response = requests.delete(
+    requests.delete(
         f'http://objapi.course.qa-practice.com/object/{object_id}')
 
 
@@ -46,8 +46,8 @@ def verify_post_new_object():
                              json=body, headers=headers)
     object_id = response.json()['id']
     assert response.status_code == 200, f'Expected 200, got {response.status_code}'
-    assert response.json()[
-               'name'] == expected_name, f'Expected name {expected_name}, got {response.json()["name"]}'
+    assert response.json()['name'] == expected_name, \
+        f'Expected name {expected_name}, got {response.json()["name"]}'
     response_no_name = requests.post('http://objapi.course.qa-practice.com/object',
                                      json={"data": body["data"]},
                                      headers=headers)
@@ -69,8 +69,8 @@ def verify_put_object():
     response = requests.put(f'http://objapi.course.qa-practice.com/object/{object_id}',
                             json=body, headers=headers)
     assert response.status_code == 200, f'Expected 200, got {response.status_code}'
-    assert response.json()[
-               'name'] == expected_name, f'Expected name {expected_name}, got {response.json()["name"]}'
+    assert response.json()['name'] == expected_name, \
+        f'Expected name {expected_name}, got {response.json()["name"]}'
     assert response.json()['data'] == body[
         'data'], f'Expected data {body["data"]}, got {response.json()["data"]}'
     response_no_name = requests.put(
@@ -96,10 +96,10 @@ def verify_patch_object():
         f'http://objapi.course.qa-practice.com/object/{object_id}',
         json=body, headers=headers)
     assert response.status_code == 200, f'Expected 200, got {response.status_code}'
-    assert response.json()[
-               'name'] == expected_name, f'Expected name {expected_name}, got {response.json()["name"]}'
-    assert response.json()[
-               'id'] == object_id, f'Expected id {object_id}, got {response.json()["id"]}'
+    assert response.json()['name'] == expected_name, \
+        f'Expected name {expected_name}, got {response.json()["name"]}'
+    assert response.json()['id'] == object_id, \
+        f'Expected id {object_id}, got {response.json()["id"]}'
     clear(object_id)
 
 
