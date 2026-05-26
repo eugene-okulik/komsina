@@ -1,11 +1,11 @@
 import sys
 import os
-import pytest
+import pytest  # noqa: F401
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from endpoint.post_object import PostObject
-from endpoint.delete_object import DeleteObject
+from endpoint.post_object import PostObject  # noqa: E402
+from endpoint.delete_object import DeleteObject  # noqa: E402
 
 post_object = PostObject()
 delete_object = DeleteObject()

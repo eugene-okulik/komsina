@@ -58,7 +58,7 @@ class TestPartialUpdateObject:
         object_id = existing_object['id']
         original_data = existing_object['data']
 
-        with allure.step(f'Отправить PATCH-запрос — обновить только имя объекта'):
+        with allure.step('Отправить PATCH-запрос — обновить только имя объекта'):
             response = patch_object.partial_update_object(
                 object_id=object_id,
                 name='partially updated name'
