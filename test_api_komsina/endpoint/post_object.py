@@ -1,31 +1,15 @@
+import allure
 import requests
-
-BASE_URL = 'http://objapi.course.qa-practice.com/object'
-HEADERS = {'Content-Type': 'application/json'}
+from .endpoint import Endpoint
 
 
-class PostObject:
-    def create_object(self, name, color, size):
-        body = {
-            'name': name,
-            'data': {
-                'color': color,
-                'size': size
-            }
-        }
-        return requests.post(BASE_URL, json=body, headers=HEADERS)
+class PostObject(Endpoint):
 
-    def create_object_without_name(self, color, size):
-        body = {
-            'data': {
-                'color': color,
-                'size': size
-            }
-        }
-        return requests.post(BASE_URL, json=body, headers=HEADERS)
-
-    def create_object_without_data(self, name):
-        body = {
-            'name': name
-        }
-        return requests.post(BASE_URL, json=body, headers=HEADERS)
+    @allure.step('Отправить POST-запрос для создания объекта')
+    def create_object(self, body):
+        self.response = requests.post(
+            self.url, json=body, headers=self.headers
+        )
+        if self.response.ok:
+            self.json = self.response.json()
+        return self.response

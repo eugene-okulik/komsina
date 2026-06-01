@@ -1,9 +1,15 @@
+import allure
 import requests
-
-BASE_URL = 'http://objapi.course.qa-practice.com/object'
-HEADERS = {'Content-Type': 'application/json'}
+from .endpoint import Endpoint
 
 
-class GetObject:
+class GetObject(Endpoint):
+
+    @allure.step('Отправить GET-запрос для объекта')
     def get_object_by_id(self, object_id):
-        return requests.get(f'{BASE_URL}/{object_id}', headers=HEADERS)
+        self.response = requests.get(
+            f'{self.url}/{object_id}', headers=self.headers
+        )
+        if self.response.ok:
+            self.json = self.response.json()
+        return self.response

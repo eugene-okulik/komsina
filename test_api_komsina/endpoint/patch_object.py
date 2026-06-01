@@ -1,12 +1,15 @@
+import allure
 import requests
-
-BASE_URL = 'http://objapi.course.qa-practice.com/object'
-HEADERS = {'Content-Type': 'application/json'}
+from .endpoint import Endpoint
 
 
-class PatchObject:
-    def partial_update_object(self, object_id, name):
-        body = {
-            'name': name
-        }
-        return requests.patch(f'{BASE_URL}/{object_id}', json=body, headers=HEADERS)
+class PatchObject(Endpoint):
+
+    @allure.step('Отправить PATCH-запрос для частичного обновления объекта')
+    def partial_update_object(self, object_id, body):
+        self.response = requests.patch(
+            f'{self.url}/{object_id}', json=body, headers=self.headers
+        )
+        if self.response.ok:
+            self.json = self.response.json()
+        return self.response

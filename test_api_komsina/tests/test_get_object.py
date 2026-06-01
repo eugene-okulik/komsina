@@ -1,43 +1,26 @@
 import pytest
 import allure
-from endpoint.get_object import GetObject
-
-get_object = GetObject()
 
 
 @allure.feature('Object API')
 @allure.story('GET')
 class TestGetObject:
 
-    @allure.title('Получение существующего объекта по id возвращает статус 200')
-    @pytest.mark.medium
-    def test_get_existing_object_returns_status_200(self, existing_object):
-        object_id = existing_object['id']
-
-        with allure.step(f'Отправить GET-запрос для объекта с id={object_id}'):
-            response = get_object.get_object_by_id(object_id)
-
-        with allure.step('Проверить, что статус ответа равен 200'):
-            assert response.status_code == 200
-
     @allure.title('Получение существующего объекта по id возвращает корректный id')
     @pytest.mark.medium
-    def test_get_existing_object_returns_correct_id(self, existing_object):
+    def test_get_existing_object_returns_correct_id(self, existing_object, get_object):
         object_id = existing_object['id']
 
         with allure.step(f'Отправить GET-запрос для объекта с id={object_id}'):
-            response = get_object.get_object_by_id(object_id)
+            get_object.get_object_by_id(object_id)
 
-        with allure.step('Проверить, что id в ответе совпадает с запрошенным'):
-            assert response.json()['id'] == object_id
+        get_object.check_status_is_200()
+        get_object.check_response_name_is_correct(existing_object['name'])
 
     @allure.title('Получение несуществующего объекта возвращает статус 404')
     @pytest.mark.medium
-    def test_get_non_existing_object_returns_status_404(self):
-        non_existing_id = '99999999999'
+    def test_get_non_existing_object_returns_status_404(self, get_object):
+        with allure.step('Отправить GET-запрос для несуществующего объекта'):
+            get_object.get_object_by_id('99999999999')
 
-        with allure.step(f'Отправить GET-запрос для несуществующего объекта id={non_existing_id}'):
-            response = get_object.get_object_by_id(non_existing_id)
-
-        with allure.step('Проверить, что статус ответа равен 404'):
-            assert response.status_code == 404
+        get_object.check_status_is_404()

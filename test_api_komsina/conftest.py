@@ -1,32 +1,56 @@
+import pytest
+from endpoint.post_object import PostObject
+from endpoint.delete_object import DeleteObject
+from endpoint.get_object import GetObject
+from endpoint.put_object import PutObject
+from endpoint.patch_object import PatchObject
+from test_data import DEFAULT_NAME, DEFAULT_COLOR, DEFAULT_SIZE
 import sys
 import os
-import pytest  # noqa: F401
-
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from endpoint.post_object import PostObject  # noqa: E402
-from endpoint.delete_object import DeleteObject  # noqa: E402
-
-post_object = PostObject()
-delete_object = DeleteObject()
-
-DEFAULT_NAME = 'test object'
-DEFAULT_COLOR = 'test color'
-DEFAULT_SIZE = 'test size'
 
 
 @pytest.fixture()
-def existing_object():
-    response = post_object.create_object(
-        name=DEFAULT_NAME,
-        color=DEFAULT_COLOR,
-        size=DEFAULT_SIZE
-    )
-    assert response.status_code == 200, (
+def post_object():
+    return PostObject()
+
+
+@pytest.fixture()
+def delete_object():
+    return DeleteObject()
+
+
+@pytest.fixture()
+def get_object():
+    return GetObject()
+
+
+@pytest.fixture()
+def put_object():
+    return PutObject()
+
+
+@pytest.fixture()
+def patch_object():
+    return PatchObject()
+
+
+@pytest.fixture()
+def existing_object(post_object, delete_object):
+    body = {
+        'name': DEFAULT_NAME,
+        'data': {
+            'color': DEFAULT_COLOR,
+            'size': DEFAULT_SIZE
+        }
+    }
+    post_object.create_object(body)
+    assert post_object.response.status_code == 200, (
         f'Не удалось создать объект для теста. '
-        f'Статус: {response.status_code}, тело: {response.text}'
+        f'Статус: {post_object.response.status_code}, '
+        f'тело: {post_object.response.text}'
     )
-    object_data = response.json()
+    object_data = post_object.response.json()
     yield object_data
 
     delete_object.delete_object(object_data['id'])

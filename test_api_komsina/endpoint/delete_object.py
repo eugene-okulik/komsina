@@ -1,9 +1,13 @@
+import allure
 import requests
-
-BASE_URL = 'http://objapi.course.qa-practice.com/object'
-HEADERS = {'Content-Type': 'application/json'}
+from .endpoint import Endpoint
 
 
-class DeleteObject:
+class DeleteObject(Endpoint):
+
+    @allure.step('Отправить DELETE-запрос для удаления объекта')
     def delete_object(self, object_id):
-        return requests.delete(f'{BASE_URL}/{object_id}', headers=HEADERS)
+        self.response = requests.delete(
+            f'{self.url}/{object_id}', headers=self.headers
+        )
+        return self.response
