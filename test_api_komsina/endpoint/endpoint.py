@@ -30,3 +30,15 @@ class Endpoint:
         assert self.json['name'] == name, (
             f'Ожидалось имя "{name}", получено "{self.json["name"]}"'
         )
+
+    @allure.step('Проверить, что data в ответе корректная')
+    def check_response_data_is_correct(self, data):
+        assert self.json['data'] == data, (
+            f'Ожидалась data "{data}", получена "{self.json["data"]}"'
+        )
+
+    @allure.step('Проверить, что объект успешно удалён')
+    def check_deletion_message(self, object_id):
+        assert f'Object with id {object_id} successfully deleted' in self.response.text, (
+            f'Ожидалось сообщение об удалении объекта {object_id}'
+        )

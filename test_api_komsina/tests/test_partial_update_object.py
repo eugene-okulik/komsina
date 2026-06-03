@@ -3,36 +3,35 @@ import allure
 
 
 @allure.feature('Object API')
-@allure.story('PUT')
-class TestUpdateObject:
+@allure.story('PATCH')
+class TestPartialUpdateObject:
 
-    @allure.title('После полного обновления объект содержит новое имя и данные')
+    @allure.title('После частичного обновления объект содержит новое имя')
     @pytest.mark.medium
-    def test_update_object_response_contains_new_data(self, existing_object, put_object):
+    def test_partial_update_object_response_contains_new_name(
+            self, existing_object, patch_object):
         object_id = existing_object['id']
-        body = {
-            'name': 'updated name',
-            'data': {'color': 'updated color', 'size': 'updated size'}
-        }
+        original_data = existing_object['data']
+        body = {'name': 'partially updated name'}
 
-        with allure.step(f'Отправить PUT-запрос для объекта с id={object_id}'):
-            put_object.update_object(object_id, body)
+        with allure.step(f'Отправить PATCH-запрос для объекта с id={object_id}'):
+            patch_object.partial_update_object(object_id, body)
 
-        put_object.check_status_is_200()
-        put_object.check_response_name_is_correct(body['name'])
+        patch_object.check_status_is_200()
+        patch_object.check_response_name_is_correct(body['name'])
+        patch_object.check_response_data_is_correct(original_data)
 
-        with allure.step('Проверить, что data в ответе содержит обновлённые значения'):
-            assert put_object.json['data'] == body['data']
-
-    @allure.title('Полное обновление без обязательных полей возвращает статус 400')
+    @allure.title('После частичного обновления id объекта остаётся неизменным')
     @pytest.mark.medium
-    @pytest.mark.parametrize('body', [
-        {'data': {'color': 'some color', 'size': 'some size'}},
-        {'name': 'some name'}
-    ])
-    def test_update_object_without_required_fields_returns_status_400(
-            self, body, existing_object, put_object):
-        with allure.step(f'Отправить PUT-запрос с телом: {body}'):
-            put_object.update_object(existing_object['id'], body)
+    def test_partial_update_object_id_remains_unchanged(
+            self, existing_object, patch_object):
+        object_id = existing_object['id']
+        body = {'name': 'partially updated name'}
 
-        put_object.check_status_is_400()
+        with allure.step('Отправить PATCH-запрос — обновить только имя объекта'):
+            patch_object.partial_update_object(object_id, body)
+
+        patch_object.check_status_is_200()
+
+        with allure.step('Проверить, что id объекта не изменился'):
+            assert patch_object.json['id'] == object_id

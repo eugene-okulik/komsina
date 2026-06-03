@@ -20,9 +20,7 @@ class TestUpdateObject:
 
         put_object.check_status_is_200()
         put_object.check_response_name_is_correct(body['name'])
-
-        with allure.step('Проверить, что data в ответе содержит обновлённые значения'):
-            assert put_object.json['data'] == body['data']
+        put_object.check_response_data_is_correct(body['data'])
 
     @allure.title('Полное обновление без обязательных полей возвращает статус 400')
     @pytest.mark.medium
