@@ -37,3 +37,4 @@ class ObjectApiUser(HttpUser):
         if response.ok:
             object_id = response.json()['id']
             self.client.delete(f'/object/{object_id}')
+            
